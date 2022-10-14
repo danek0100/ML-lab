@@ -1,0 +1,16 @@
+stages:
+  data_processing:
+    cmd: python -m src.data.make_dataset OUTPUT_TARGET_FILEPATH=.
+    deps:
+      - src/data/make_dataset.py
+      - src/data/preprocess.py
+      - src/config.py
+      - src/utils.py
+    params:
+      - data_load
+      - preprocess_category
+      - preprocess_paths
+    outs:
+      - data/processed/target_for_data_for_train.pkl
+      - data/interim/data_for_train.pkl
+      - data/interim/test.pkl

@@ -1,19 +1,38 @@
 # -*- coding: utf-8 -*-
 import click
 import logging
+import os
+import pandas as pd
+
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
+from src.data.preprocess import preprocess, extract_target, preprocess_target
+from src.config import *
+from src.utils import save_as_pickle
 
 
 @click.command()
-@click.argument('input_filepath', type=click.Path(exists=True))
-@click.argument('output_filepath', type=click.Path())
-def main(input_filepath, output_filepath):
+@click.argument('output_target_filepath', type=click.Path())
+def main(output_target_filepath=None):
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../processed).
     """
     logger = logging.getLogger(__name__)
     logger.info('making final data set from raw data')
+
+    train = pd.read_csv(train_csv)
+    test = pd.read_csv(test_csv)
+
+    train = preprocess(train)
+    test = preprocess(test)
+
+    if output_target_filepath:
+        train, target = extract_target(train)
+        target = preprocess_target(target)
+        save_as_pickle(target, target_data_train_pkl)
+
+    save_as_pickle(train, data_for_train_pkl)
+    save_as_pickle(test, test_pkl)
 
 
 if __name__ == '__main__':
