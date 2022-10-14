@@ -10,11 +10,11 @@ stages:
       md5: 88f8b56af68bf8c7cf3fda9ae4ff02a8
       size: 400268
     - path: src/config.py
-      md5: c83bbeb026bb3b11829a430b87baeee5
-      size: 815
+      md5: 328f427d0797c14956154e91181fbf74
+      size: 1085
     - path: src/data/make_dataset.py
-      md5: c303bb09f39f3a75c51fe8d354cc3cc3
-      size: 1552
+      md5: 9ba9d506d42669d4447ac591e6cc0a00
+      size: 1568
     - path: src/data/preprocess.py
       md5: ccc727096623e37c6242cd9564edb4b2
       size: 4248
@@ -26,6 +26,9 @@ stages:
         data_load:
           train_csv: data/raw/train.csv
           test_csv: data/raw/test.csv
+        interim_paths:
+          data_for_train_pkl: data/interim/data_for_train.pkl
+          test_pkl: data/interim/test.pkl
         preprocess_category:
           TARGET_COLS:
           - Артериальная гипертензия
@@ -72,10 +75,10 @@ stages:
           - Возраст курения
           - Сигарет в день
           - Возраст алког
-        preprocess_paths:
+        processed_paths:
           target_data_train_pkl: data/processed/target_for_data_for_train.pkl
-          data_for_train_pkl: data/interim/data_for_train.pkl
-          test_pkl: data/interim/test.pkl
+          processed_test_pkl: data/processed/test.pkl
+          processed_data_for_train_pkl: data/processed/data_for_train.pkl
     outs:
     - path: data/interim/data_for_train.pkl
       md5: c23161227647f65da1979b74e7c4e0c9
@@ -86,3 +89,40 @@ stages:
     - path: data/processed/target_for_data_for_train.pkl
       md5: bed81f076218178c4408936f2f8fa788
       size: 21106
+  feature_generation:
+    cmd: python -m src.features.build_features
+    deps:
+    - path: data/interim/data_for_train.pkl
+      md5: c23161227647f65da1979b74e7c4e0c9
+      size: 52256
+    - path: data/interim/test.pkl
+      md5: 77e53843e5690f8bd7b30b521f8a0574
+      size: 37012
+    - path: src/config.py
+      md5: 328f427d0797c14956154e91181fbf74
+      size: 1085
+    - path: src/features/build_features.py
+      md5: 67796ee742ff4e696533b2b56de2fa8c
+      size: 404
+    - path: src/features/functions.py
+      md5: 351049ef04636f62f4ef08ae08f6ff96
+      size: 2320
+    - path: src/utils.py
+      md5: a63e9fc88f67423ded9b88dcd49a34f6
+      size: 387
+    params:
+      params.yaml:
+        interim_paths:
+          data_for_train_pkl: data/interim/data_for_train.pkl
+          test_pkl: data/interim/test.pkl
+        processed_paths:
+          target_data_train_pkl: data/processed/target_for_data_for_train.pkl
+          processed_test_pkl: data/processed/test.pkl
+          processed_data_for_train_pkl: data/processed/data_for_train.pkl
+    outs:
+    - path: data/processed/data_for_train.pkl
+      md5: 93ca7bd4408b0218310485335e50cbae
+      size: 51584
+    - path: data/processed/test.pkl
+      md5: e5c0e58481efe3b0e4cfd9fa5934b074
+      size: 36306

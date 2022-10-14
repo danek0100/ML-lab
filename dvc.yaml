@@ -9,10 +9,27 @@ stages:
       - src/config.py
       - src/utils.py
     params:
+      - interim_paths
       - data_load
       - preprocess_category
-      - preprocess_paths
+      - processed_paths
     outs:
       - data/processed/target_for_data_for_train.pkl
       - data/interim/data_for_train.pkl
       - data/interim/test.pkl
+
+  feature_generation:
+    cmd: python -m src.features.build_features
+    deps:
+      - src/config.py
+      - src/utils.py
+      - src/features/functions.py
+      - src/features/build_features.py
+      - data/interim/data_for_train.pkl
+      - data/interim/test.pkl
+    params:
+      - interim_paths
+      - processed_paths
+    outs:
+      - data/processed/test.pkl
+      - data/processed/data_for_train.pkl

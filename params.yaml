@@ -11,8 +11,12 @@ preprocess_category:
   OHE_COLS: [ 'Пол', 'Вы работаете?', 'Выход на пенсию', 'Прекращение работы по болезни', 'Сахарный диабет', 'Гепатит', 'Онкология', 'Хроническое заболевание легких', 'Бронжиальная астма', 'Туберкулез легких ', 'ВИЧ/СПИД', 'Регулярный прим лекарственных средств', 'Травмы за год', 'Переломы','Пассивное курение', 'Сон после обеда', 'Спорт, клубы', 'Религия, клубы']
   REAL_COLS: ['Возраст курения', 'Сигарет в день', 'Возраст алког']
 
-preprocess_paths:
-  target_data_train_pkl: 'data/processed/target_for_data_for_train.pkl'
+interim_paths:
   data_for_train_pkl: 'data/interim/data_for_train.pkl'
   test_pkl: 'data/interim/test.pkl'
+
+processed_paths:
+  target_data_train_pkl: 'data/processed/target_for_data_for_train.pkl'
+  processed_test_pkl: 'data/processed/test.pkl'
+  processed_data_for_train_pkl: 'data/processed/data_for_train.pkl'
 

@@ -31,8 +31,8 @@ def main(output_target_filepath=None):
         target = preprocess_target(target)
         save_as_pickle(target, target_data_train_pkl)
 
-    save_as_pickle(train, data_for_train_pkl)
-    save_as_pickle(test, test_pkl)
+    save_as_pickle(train, interim_data_for_train_pkl)
+    save_as_pickle(test, interim_test_pkl)
 
 
 if __name__ == '__main__':
