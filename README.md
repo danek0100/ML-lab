@@ -3,6 +3,8 @@ ML-Lab-1
 
 Lab about Machine Learning.
 
+Data storage: https://drive.google.com/drive/folders/1VH7MS7sFDgY69r4AADqP2EyZL2hPIR-P
+
 Project Organization
 ------------
 

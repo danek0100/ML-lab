@@ -2,6 +2,8 @@ stages:
   data_processing:
     cmd: python -m src.data.make_dataset OUTPUT_TARGET_FILEPATH=.
     deps:
+      - data/raw/test.csv
+      - data/raw/train.csv
       - src/data/make_dataset.py
       - src/data/preprocess.py
       - src/config.py

@@ -3,6 +3,12 @@ stages:
   data_processing:
     cmd: python -m src.data.make_dataset OUTPUT_TARGET_FILEPATH=.
     deps:
+    - path: data/raw/test.csv
+      md5: a34d239835317e59b1b9f2fec27fa427
+      size: 249580
+    - path: data/raw/train.csv
+      md5: 88f8b56af68bf8c7cf3fda9ae4ff02a8
+      size: 400268
     - path: src/config.py
       md5: c83bbeb026bb3b11829a430b87baeee5
       size: 815
@@ -70,3 +76,13 @@ stages:
           target_data_train_pkl: data/processed/target_for_data_for_train.pkl
           data_for_train_pkl: data/interim/data_for_train.pkl
           test_pkl: data/interim/test.pkl
+    outs:
+    - path: data/interim/data_for_train.pkl
+      md5: c23161227647f65da1979b74e7c4e0c9
+      size: 52256
+    - path: data/interim/test.pkl
+      md5: 77e53843e5690f8bd7b30b521f8a0574
+      size: 37012
+    - path: data/processed/target_for_data_for_train.pkl
+      md5: bed81f076218178c4408936f2f8fa788
+      size: 21106
