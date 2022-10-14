@@ -1,0 +1,72 @@
+schema: '2.0'
+stages:
+  data_processing:
+    cmd: python -m src.data.make_dataset OUTPUT_TARGET_FILEPATH=.
+    deps:
+    - path: src/config.py
+      md5: c83bbeb026bb3b11829a430b87baeee5
+      size: 815
+    - path: src/data/make_dataset.py
+      md5: c303bb09f39f3a75c51fe8d354cc3cc3
+      size: 1552
+    - path: src/data/preprocess.py
+      md5: ccc727096623e37c6242cd9564edb4b2
+      size: 4248
+    - path: src/utils.py
+      md5: a63e9fc88f67423ded9b88dcd49a34f6
+      size: 387
+    params:
+      params.yaml:
+        data_load:
+          train_csv: data/raw/train.csv
+          test_csv: data/raw/test.csv
+        preprocess_category:
+          TARGET_COLS:
+          - Артериальная гипертензия
+          - ОНМК
+          - Стенокардия, ИБС, инфаркт миокарда
+          - Сердечная недостаточность
+          - Прочие заболевания сердца
+          ID_COL: ID
+          EDU_COL: Образование
+          SEX_COL: Пол
+          CAT_COLS:
+          - Пол
+          - Семья
+          - Этнос
+          - Национальность
+          - Религия
+          - Образование
+          - Профессия
+          - Статус Курения
+          - Частота пасс кур
+          - Алкоголь
+          - Время засыпания
+          - Время пробуждения
+          OHE_COLS:
+          - Пол
+          - Вы работаете?
+          - Выход на пенсию
+          - Прекращение работы по болезни
+          - Сахарный диабет
+          - Гепатит
+          - Онкология
+          - Хроническое заболевание легких
+          - Бронжиальная астма
+          - 'Туберкулез легких '
+          - ВИЧ/СПИД
+          - Регулярный прим лекарственных средств
+          - Травмы за год
+          - Переломы
+          - Пассивное курение
+          - Сон после обеда
+          - Спорт, клубы
+          - Религия, клубы
+          REAL_COLS:
+          - Возраст курения
+          - Сигарет в день
+          - Возраст алког
+        preprocess_paths:
+          target_data_train_pkl: data/processed/target_for_data_for_train.pkl
+          data_for_train_pkl: data/interim/data_for_train.pkl
+          test_pkl: data/interim/test.pkl
