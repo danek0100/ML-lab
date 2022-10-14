@@ -28,3 +28,17 @@ interim_test_pkl = config['interim_paths']['test_pkl']
 processed_test_pkl = config['processed_paths']['processed_test_pkl']
 processed_data_for_train_pkl = config['processed_paths']['processed_data_for_train_pkl']
 
+# Training
+seed = config['base']['seed']
+CATEGORIES_COL = config['train']['CATEGORIES_COL']
+train_size = config['train']['train_size']
+iterations = config['train']['iterations']
+loss_function = config['train']['loss_function']
+eval_metric = config['train']['eval_metric']
+learning_rate = config['train']['learning_rate']
+bootstrap_type = config['train']['bootstrap_type']
+boost_from_average = config['train']['boost_from_average']
+leaf_estimation_iterations = config['train']['leaf_estimation_iterations']
+leaf_estimation_method = config['train']['leaf_estimation_method']
+
+model_path = config['train']['model_path']

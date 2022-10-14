@@ -33,3 +33,16 @@ stages:
     outs:
       - data/processed/test.pkl
       - data/processed/data_for_train.pkl
+
+  train:
+    cmd: python -m src.models.train_model
+    deps:
+      - src/config.py
+      - data/processed/test.pkl
+      - data/processed/data_for_train.pkl
+    params:
+      - base
+      - train
+      - processed_paths
+    outs:
+      - models/model.joblib

@@ -10,8 +10,8 @@ stages:
       md5: 88f8b56af68bf8c7cf3fda9ae4ff02a8
       size: 400268
     - path: src/config.py
-      md5: 328f427d0797c14956154e91181fbf74
-      size: 1085
+      md5: 0da1e677e2a455a28e90b60a8dbe8280
+      size: 1716
     - path: src/data/make_dataset.py
       md5: 9ba9d506d42669d4447ac591e6cc0a00
       size: 1568
@@ -99,8 +99,8 @@ stages:
       md5: 77e53843e5690f8bd7b30b521f8a0574
       size: 37012
     - path: src/config.py
-      md5: 328f427d0797c14956154e91181fbf74
-      size: 1085
+      md5: 0da1e677e2a455a28e90b60a8dbe8280
+      size: 1716
     - path: src/features/build_features.py
       md5: 67796ee742ff4e696533b2b56de2fa8c
       size: 404
@@ -126,3 +126,49 @@ stages:
     - path: data/processed/test.pkl
       md5: e5c0e58481efe3b0e4cfd9fa5934b074
       size: 36306
+  train:
+    cmd: python -m src.models.train_model
+    deps:
+    - path: data/processed/data_for_train.pkl
+      md5: 93ca7bd4408b0218310485335e50cbae
+      size: 51584
+    - path: data/processed/test.pkl
+      md5: e5c0e58481efe3b0e4cfd9fa5934b074
+      size: 36306
+    - path: src/config.py
+      md5: 0da1e677e2a455a28e90b60a8dbe8280
+      size: 1716
+    params:
+      params.yaml:
+        base:
+          seed: 77
+        processed_paths:
+          target_data_train_pkl: data/processed/target_for_data_for_train.pkl
+          processed_test_pkl: data/processed/test.pkl
+          processed_data_for_train_pkl: data/processed/data_for_train.pkl
+        train:
+          CATEGORIES_COL:
+          - Пол
+          - Семья
+          - Этнос
+          - Национальность
+          - Религия
+          - Профессия
+          - Статус Курения
+          - Частота пасс кур
+          - Алкоголь
+          - Сова/Жаворонок/Голубь
+          train_size: 0.8
+          iterations: 10
+          loss_function: MultiLogloss
+          eval_metric: MultiLogloss
+          learning_rate: 0.01
+          bootstrap_type: Bayesian
+          boost_from_average: false
+          leaf_estimation_iterations: 1
+          leaf_estimation_method: Gradient
+          model_path: models/model.joblib
+    outs:
+    - path: models/model.joblib
+      md5: a9a22663faa479a239a30974e276f78c
+      size: 24834

@@ -87,3 +87,6 @@ target/
 
 # Mypy cache
 .mypy_cache/
+
+# Catboost
+catboost_info

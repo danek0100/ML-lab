@@ -1,3 +1,6 @@
+joblib
+catboost
+scikit-learn
 numpy
 pandas
 # local package
