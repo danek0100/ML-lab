@@ -29,7 +29,7 @@ train:
   iterations: 10
   loss_function: 'MultiLogloss'
   eval_metric: 'MultiLogloss'
-  learning_rate: 0.01
+  learning_rate: 0.2
   bootstrap_type: 'Bayesian'
   boost_from_average: False
   leaf_estimation_iterations: 1

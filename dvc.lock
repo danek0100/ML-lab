@@ -162,7 +162,7 @@ stages:
           iterations: 10
           loss_function: MultiLogloss
           eval_metric: MultiLogloss
-          learning_rate: 0.05
+          learning_rate: 0.2
           bootstrap_type: Bayesian
           boost_from_average: false
           leaf_estimation_iterations: 1
@@ -172,8 +172,8 @@ stages:
           Y_test_path: data/processed/Y_test_data.pkl
     outs:
     - path: catboost_info/learn_error.tsv
-      md5: 8b600ddff5fe0fdddda884efb357c447
-      size: 167
+      md5: 9aacb1df3ef7758dd0f9fec1e3c85e2c
+      size: 166
     - path: data/processed/X_test_data.pkl
       md5: e852b819272b95844df0545d0b780126
       size: 15155
@@ -181,8 +181,8 @@ stages:
       md5: ec0e521e868cab7f1ba19500a9975cdf
       size: 4885
     - path: models/model.joblib
-      md5: 2156d20f272dfae6ce44efa54b4d8d79
-      size: 24834
+      md5: 43b58c6853e9aec91667ab5344c75b87
+      size: 24302
   evaluate:
     cmd: python -m src.models.predict_model
     deps:
@@ -193,8 +193,8 @@ stages:
       md5: ec0e521e868cab7f1ba19500a9975cdf
       size: 4885
     - path: models/model.joblib
-      md5: 2156d20f272dfae6ce44efa54b4d8d79
-      size: 24834
+      md5: 43b58c6853e9aec91667ab5344c75b87
+      size: 24302
     - path: src/config.py
       md5: d9c2c68186fd7e0c223410b7074d7e5d
       size: 1920
@@ -222,7 +222,7 @@ stages:
           iterations: 10
           loss_function: MultiLogloss
           eval_metric: MultiLogloss
-          learning_rate: 0.05
+          learning_rate: 0.2
           bootstrap_type: Bayesian
           boost_from_average: false
           leaf_estimation_iterations: 1
@@ -232,5 +232,5 @@ stages:
           Y_test_path: data/processed/Y_test_data.pkl
     outs:
     - path: reports/metrics.json
-      md5: c31424efaed3529de6298430d30114f2
-      size: 27
+      md5: 246ced042da4621952ce68c7495fafa8
+      size: 26
