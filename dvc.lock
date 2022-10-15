@@ -10,8 +10,8 @@ stages:
       md5: 88f8b56af68bf8c7cf3fda9ae4ff02a8
       size: 400268
     - path: src/config.py
-      md5: 0da1e677e2a455a28e90b60a8dbe8280
-      size: 1716
+      md5: d9c2c68186fd7e0c223410b7074d7e5d
+      size: 1920
     - path: src/data/make_dataset.py
       md5: 9ba9d506d42669d4447ac591e6cc0a00
       size: 1568
@@ -99,8 +99,8 @@ stages:
       md5: 77e53843e5690f8bd7b30b521f8a0574
       size: 37012
     - path: src/config.py
-      md5: 0da1e677e2a455a28e90b60a8dbe8280
-      size: 1716
+      md5: d9c2c68186fd7e0c223410b7074d7e5d
+      size: 1920
     - path: src/features/build_features.py
       md5: 67796ee742ff4e696533b2b56de2fa8c
       size: 404
@@ -136,8 +136,8 @@ stages:
       md5: e5c0e58481efe3b0e4cfd9fa5934b074
       size: 36306
     - path: src/config.py
-      md5: 0da1e677e2a455a28e90b60a8dbe8280
-      size: 1716
+      md5: d9c2c68186fd7e0c223410b7074d7e5d
+      size: 1920
     params:
       params.yaml:
         base:
@@ -162,13 +162,75 @@ stages:
           iterations: 10
           loss_function: MultiLogloss
           eval_metric: MultiLogloss
-          learning_rate: 0.01
+          learning_rate: 0.05
           bootstrap_type: Bayesian
           boost_from_average: false
           leaf_estimation_iterations: 1
           leaf_estimation_method: Gradient
           model_path: models/model.joblib
+          X_test_path: data/processed/X_test_data.pkl
+          Y_test_path: data/processed/Y_test_data.pkl
     outs:
+    - path: catboost_info/learn_error.tsv
+      md5: 8b600ddff5fe0fdddda884efb357c447
+      size: 167
+    - path: data/processed/X_test_data.pkl
+      md5: e852b819272b95844df0545d0b780126
+      size: 15155
+    - path: data/processed/Y_test_data.pkl
+      md5: ec0e521e868cab7f1ba19500a9975cdf
+      size: 4885
     - path: models/model.joblib
-      md5: a9a22663faa479a239a30974e276f78c
+      md5: 2156d20f272dfae6ce44efa54b4d8d79
       size: 24834
+  evaluate:
+    cmd: python -m src.models.predict_model
+    deps:
+    - path: data/processed/X_test_data.pkl
+      md5: e852b819272b95844df0545d0b780126
+      size: 15155
+    - path: data/processed/Y_test_data.pkl
+      md5: ec0e521e868cab7f1ba19500a9975cdf
+      size: 4885
+    - path: models/model.joblib
+      md5: 2156d20f272dfae6ce44efa54b4d8d79
+      size: 24834
+    - path: src/config.py
+      md5: d9c2c68186fd7e0c223410b7074d7e5d
+      size: 1920
+    - path: src/models/train_model.py
+      md5: 064da5276a63c3fed6f90f2613433145
+      size: 1032
+    params:
+      params.yaml:
+        evaluate:
+          score_metric: f1
+          score_path: reports/metrics.json
+        train:
+          CATEGORIES_COL:
+          - Пол
+          - Семья
+          - Этнос
+          - Национальность
+          - Религия
+          - Профессия
+          - Статус Курения
+          - Частота пасс кур
+          - Алкоголь
+          - Сова/Жаворонок/Голубь
+          train_size: 0.8
+          iterations: 10
+          loss_function: MultiLogloss
+          eval_metric: MultiLogloss
+          learning_rate: 0.05
+          bootstrap_type: Bayesian
+          boost_from_average: false
+          leaf_estimation_iterations: 1
+          leaf_estimation_method: Gradient
+          model_path: models/model.joblib
+          X_test_path: data/processed/X_test_data.pkl
+          Y_test_path: data/processed/Y_test_data.pkl
+    outs:
+    - path: reports/metrics.json
+      md5: c31424efaed3529de6298430d30114f2
+      size: 27

@@ -46,3 +46,21 @@ stages:
       - processed_paths
     outs:
       - models/model.joblib
+      - data/processed/X_test_data.pkl
+      - data/processed/Y_test_data.pkl
+    plots:
+      - catboost_info/learn_error.tsv
+
+  evaluate:
+    cmd: python -m src.models.predict_model
+    deps:
+      - src/config.py
+      - src/models/train_model.py
+      - models/model.joblib
+      - data/processed/X_test_data.pkl
+      - data/processed/Y_test_data.pkl
+    params:
+      - train
+      - evaluate
+    metrics:
+      - reports/metrics.json

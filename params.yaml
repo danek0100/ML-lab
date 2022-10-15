@@ -36,3 +36,9 @@ train:
   leaf_estimation_method: 'Gradient'
 
   model_path: 'models/model.joblib'
+  X_test_path: 'data/processed/X_test_data.pkl'
+  Y_test_path: 'data/processed/Y_test_data.pkl'
+
+evaluate:
+  score_metric: 'f1'
+  score_path: 'reports/metrics.json'

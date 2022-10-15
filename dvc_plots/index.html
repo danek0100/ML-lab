@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <title>DVC Plot</title>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.2.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.18.2"></script>
+    
+    <style>
+        table {
+            border-spacing: 15px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id = "catboost_info_learn_error_tsv">
+        <script type = "text/javascript">
+            var spec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+        "values": [
+    {
+        "MultiLogloss": "0.6918675069",
+        "iter": "0",
+        "rev": "workspace",
+        "step": 0
+    },
+    {
+        "MultiLogloss": "0.6905839394",
+        "iter": "1",
+        "rev": "workspace",
+        "step": 1
+    },
+    {
+        "MultiLogloss": "0.6892201136",
+        "iter": "2",
+        "rev": "workspace",
+        "step": 2
+    },
+    {
+        "MultiLogloss": "0.6879419742",
+        "iter": "3",
+        "rev": "workspace",
+        "step": 3
+    },
+    {
+        "MultiLogloss": "0.6866234337",
+        "iter": "4",
+        "rev": "workspace",
+        "step": 4
+    },
+    {
+        "MultiLogloss": "0.685367125",
+        "iter": "5",
+        "rev": "workspace",
+        "step": 5
+    },
+    {
+        "MultiLogloss": "0.6841239655",
+        "iter": "6",
+        "rev": "workspace",
+        "step": 6
+    },
+    {
+        "MultiLogloss": "0.68290171",
+        "iter": "7",
+        "rev": "workspace",
+        "step": 7
+    },
+    {
+        "MultiLogloss": "0.6816571155",
+        "iter": "8",
+        "rev": "workspace",
+        "step": 8
+    },
+    {
+        "MultiLogloss": "0.6804098876",
+        "iter": "9",
+        "rev": "workspace",
+        "step": 9
+    }
+]
+    },
+    "title": "catboost_info/learn_error.tsv",
+    "width": 300,
+    "height": 300,
+    "layer": [
+        {
+            "encoding": {
+                "x": {
+                    "field": "step",
+                    "type": "quantitative",
+                    "title": "step"
+                },
+                "y": {
+                    "field": "MultiLogloss",
+                    "type": "quantitative",
+                    "title": "MultiLogloss",
+                    "scale": {
+                        "zero": false
+                    }
+                },
+                "color": {
+                    "field": "rev",
+                    "type": "nominal"
+                }
+            },
+            "layer": [
+                {
+                    "mark": "line"
+                },
+                {
+                    "selection": {
+                        "label": {
+                            "type": "single",
+                            "nearest": true,
+                            "on": "mouseover",
+                            "encodings": [
+                                "x"
+                            ],
+                            "empty": "none",
+                            "clear": "mouseout"
+                        }
+                    },
+                    "mark": "point",
+                    "encoding": {
+                        "opacity": {
+                            "condition": {
+                                "selection": "label",
+                                "value": 1
+                            },
+                            "value": 0
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "transform": [
+                {
+                    "filter": {
+                        "selection": "label"
+                    }
+                }
+            ],
+            "layer": [
+                {
+                    "mark": {
+                        "type": "rule",
+                        "color": "gray"
+                    },
+                    "encoding": {
+                        "x": {
+                            "field": "step",
+                            "type": "quantitative"
+                        }
+                    }
+                },
+                {
+                    "encoding": {
+                        "text": {
+                            "type": "quantitative",
+                            "field": "MultiLogloss"
+                        },
+                        "x": {
+                            "field": "step",
+                            "type": "quantitative"
+                        },
+                        "y": {
+                            "field": "MultiLogloss",
+                            "type": "quantitative"
+                        }
+                    },
+                    "layer": [
+                        {
+                            "mark": {
+                                "type": "text",
+                                "align": "left",
+                                "dx": 5,
+                                "dy": -5
+                            },
+                            "encoding": {
+                                "color": {
+                                    "type": "nominal",
+                                    "field": "rev"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+;
+            vegaEmbed('#catboost_info_learn_error_tsv', spec);
+        </script>
+    </div>
+    
+</body>
+</html>

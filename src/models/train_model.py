@@ -7,12 +7,10 @@ from catboost import Pool
 from catboost import CatBoostClassifier
 
 from src.config import *
+from src.utils import save_as_pickle
 
 train = pd.read_pickle(processed_data_for_train_pkl)
 target = pd.read_pickle(target_data_train_pkl)
-
-# train = pd.read_pickle("../../" + processed_data_for_train_pkl)
-# target = pd.read_pickle("../../" +target_data_train_pkl)
 
 X_train, X_test, Y_train, Y_test = train_test_split(train, target, train_size=train_size, random_state=seed)
 pool = Pool(X_train, Y_train, cat_features=CATEGORIES_COL)
@@ -22,4 +20,7 @@ model = CatBoostClassifier(iterations=iterations, loss_function=loss_function,
                            leaf_estimation_iterations=leaf_estimation_iterations,
                            leaf_estimation_method=leaf_estimation_method)
 model.fit(pool)
+
+save_as_pickle(X_test, X_test_path)
+save_as_pickle(Y_test, Y_test_path)
 joblib.dump(model, model_path)

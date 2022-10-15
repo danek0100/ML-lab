@@ -42,3 +42,9 @@ leaf_estimation_iterations = config['train']['leaf_estimation_iterations']
 leaf_estimation_method = config['train']['leaf_estimation_method']
 
 model_path = config['train']['model_path']
+X_test_path = config['train']['X_test_path']
+Y_test_path = config['train']['Y_test_path']
+
+# Evaluate
+score_metric = config['evaluate']['score_metric']
+score_path = config['evaluate']['score_path']
