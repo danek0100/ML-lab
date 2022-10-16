@@ -1,6 +1,6 @@
 Path                           Metric     HEAD     workspace    Change
-reports\metrics_catboost.json  f1         0.26982  0.26947      -0.00035
-reports\metrics_catboost.json  recall     0.24474  0.24342      -0.00132
-reports\metrics_lightgbm.json  f1         0.15246  0.14684      -0.00561
-reports\metrics_lightgbm.json  precision  0.19474  0.18421      -0.01053
-reports\metrics_lightgbm.json  recall     0.13684  0.13202      -0.00482
+reports\metrics_catboost.json  f1         0.27211  0.27158      -0.00053
+reports\metrics_catboost.json  recall     0.24518  0.24474      -0.00044
+reports\metrics_lightgbm.json  f1         0.13368  0.13404      0.00035
+reports\metrics_lightgbm.json  precision  0.16842  0.17895      0.01053
+reports\metrics_lightgbm.json  recall     0.12061  0.11667      -0.00395
