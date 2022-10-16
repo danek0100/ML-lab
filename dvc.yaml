@@ -70,3 +70,15 @@ stages:
     metrics:
       - reports/metrics_catboost.json
       - reports/metrics_lightgbm.json
+    plots:
+      - reports/metrics_rocauc_catboost.csv
+      - reports/metrics_rocauc_lgbm.csv
+
+  inference:
+    cmd: python -m src.inference.inference DATA_FILEPATH=data/processed/test.pkl
+    deps:
+      - data/raw/test.csv
+      - src/config.py
+      - src/inference/inference.py
+    params:
+      - train

@@ -51,3 +51,6 @@ Y_test_path = config['train']['Y_test_path']
 score_metric = config['evaluate']['score_metric']
 score_path_catboost = config['evaluate']['score_path_catboost']
 score_path_lightgbm = config['evaluate']['score_path_lightgbm']
+score_path_rocauc_samples_catboost = config['evaluate']['score_path_rocauc_samples_catboost']
+score_path_rocauc_samples_lgbm = config['evaluate']['score_path_rocauc_samples_lgbm']
+

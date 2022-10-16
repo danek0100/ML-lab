@@ -24,123 +24,63 @@
     "data": {
         "values": [
     {
-        "MultiLogloss": "0.6681403691",
+        "MultiLogloss": "0.6850070528",
         "iter": "0",
         "rev": "workspace",
         "step": 0
     },
     {
-        "MultiLogloss": "0.6434793528",
+        "MultiLogloss": "0.6769819141",
         "iter": "1",
         "rev": "workspace",
         "step": 1
     },
     {
-        "MultiLogloss": "0.622429757",
+        "MultiLogloss": "0.6693171875",
         "iter": "2",
         "rev": "workspace",
         "step": 2
     },
     {
-        "MultiLogloss": "0.603518452",
+        "MultiLogloss": "0.6619166119",
         "iter": "3",
         "rev": "workspace",
         "step": 3
     },
     {
-        "MultiLogloss": "0.5863044088",
+        "MultiLogloss": "0.654510546",
         "iter": "4",
         "rev": "workspace",
         "step": 4
     },
     {
-        "MultiLogloss": "0.5693318254",
+        "MultiLogloss": "0.6471324275",
         "iter": "5",
         "rev": "workspace",
         "step": 5
     },
     {
-        "MultiLogloss": "0.5552170856",
+        "MultiLogloss": "0.6400873635",
         "iter": "6",
         "rev": "workspace",
         "step": 6
     },
     {
-        "MultiLogloss": "0.5406000975",
+        "MultiLogloss": "0.633220648",
         "iter": "7",
         "rev": "workspace",
         "step": 7
     },
     {
-        "MultiLogloss": "0.5288351129",
+        "MultiLogloss": "0.6267064686",
         "iter": "8",
         "rev": "workspace",
         "step": 8
     },
     {
-        "MultiLogloss": "0.5180900096",
+        "MultiLogloss": "0.6200102147",
         "iter": "9",
         "rev": "workspace",
-        "step": 9
-    },
-    {
-        "MultiLogloss": "0.686779697",
-        "iter": "0",
-        "rev": "HEAD",
-        "step": 0
-    },
-    {
-        "MultiLogloss": "0.6805142851",
-        "iter": "1",
-        "rev": "HEAD",
-        "step": 1
-    },
-    {
-        "MultiLogloss": "0.6739641445",
-        "iter": "2",
-        "rev": "HEAD",
-        "step": 2
-    },
-    {
-        "MultiLogloss": "0.6679630846",
-        "iter": "3",
-        "rev": "HEAD",
-        "step": 3
-    },
-    {
-        "MultiLogloss": "0.6618803685",
-        "iter": "4",
-        "rev": "HEAD",
-        "step": 4
-    },
-    {
-        "MultiLogloss": "0.6562102741",
-        "iter": "5",
-        "rev": "HEAD",
-        "step": 5
-    },
-    {
-        "MultiLogloss": "0.6507075053",
-        "iter": "6",
-        "rev": "HEAD",
-        "step": 6
-    },
-    {
-        "MultiLogloss": "0.6453998865",
-        "iter": "7",
-        "rev": "HEAD",
-        "step": 7
-    },
-    {
-        "MultiLogloss": "0.6400997896",
-        "iter": "8",
-        "rev": "HEAD",
-        "step": 8
-    },
-    {
-        "MultiLogloss": "0.6348951483",
-        "iter": "9",
-        "rev": "HEAD",
         "step": 9
     }
 ]
@@ -258,6 +198,316 @@
 }
 ;
             vegaEmbed('#catboost_info_learn_error_tsv', spec);
+        </script>
+    </div>
+    
+
+    <div id = "reports_metrics_rocauc_catboost_csv">
+        <script type = "text/javascript">
+            var spec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+        "values": [
+    {
+        "column": "0",
+        "result": "0.7317290552584671",
+        "rev": "workspace",
+        "step": 0
+    },
+    {
+        "column": "1",
+        "result": "0.6926510989010989",
+        "rev": "workspace",
+        "step": 1
+    },
+    {
+        "column": "2",
+        "result": "0.7733663108565477",
+        "rev": "workspace",
+        "step": 2
+    },
+    {
+        "column": "3",
+        "result": "0.721606648199446",
+        "rev": "workspace",
+        "step": 3
+    },
+    {
+        "column": "4",
+        "result": "0.4826589595375723",
+        "rev": "workspace",
+        "step": 4
+    }
+]
+    },
+    "title": "reports/metrics_rocauc_catboost.csv",
+    "width": 300,
+    "height": 300,
+    "layer": [
+        {
+            "encoding": {
+                "x": {
+                    "field": "step",
+                    "type": "quantitative",
+                    "title": "step"
+                },
+                "y": {
+                    "field": "result",
+                    "type": "quantitative",
+                    "title": "result",
+                    "scale": {
+                        "zero": false
+                    }
+                },
+                "color": {
+                    "field": "rev",
+                    "type": "nominal"
+                }
+            },
+            "layer": [
+                {
+                    "mark": "line"
+                },
+                {
+                    "selection": {
+                        "label": {
+                            "type": "single",
+                            "nearest": true,
+                            "on": "mouseover",
+                            "encodings": [
+                                "x"
+                            ],
+                            "empty": "none",
+                            "clear": "mouseout"
+                        }
+                    },
+                    "mark": "point",
+                    "encoding": {
+                        "opacity": {
+                            "condition": {
+                                "selection": "label",
+                                "value": 1
+                            },
+                            "value": 0
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "transform": [
+                {
+                    "filter": {
+                        "selection": "label"
+                    }
+                }
+            ],
+            "layer": [
+                {
+                    "mark": {
+                        "type": "rule",
+                        "color": "gray"
+                    },
+                    "encoding": {
+                        "x": {
+                            "field": "step",
+                            "type": "quantitative"
+                        }
+                    }
+                },
+                {
+                    "encoding": {
+                        "text": {
+                            "type": "quantitative",
+                            "field": "result"
+                        },
+                        "x": {
+                            "field": "step",
+                            "type": "quantitative"
+                        },
+                        "y": {
+                            "field": "result",
+                            "type": "quantitative"
+                        }
+                    },
+                    "layer": [
+                        {
+                            "mark": {
+                                "type": "text",
+                                "align": "left",
+                                "dx": 5,
+                                "dy": -5
+                            },
+                            "encoding": {
+                                "color": {
+                                    "type": "nominal",
+                                    "field": "rev"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+;
+            vegaEmbed('#reports_metrics_rocauc_catboost_csv', spec);
+        </script>
+    </div>
+    
+
+    <div id = "reports_metrics_rocauc_lgbm_csv">
+        <script type = "text/javascript">
+            var spec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+        "values": [
+    {
+        "column": "0",
+        "result": "0.5754233511586452",
+        "rev": "workspace",
+        "step": 0
+    },
+    {
+        "column": "1",
+        "result": "0.4220467032967033",
+        "rev": "workspace",
+        "step": 1
+    },
+    {
+        "column": "2",
+        "result": "0.4967456391564697",
+        "rev": "workspace",
+        "step": 2
+    },
+    {
+        "column": "3",
+        "result": "0.5612496152662358",
+        "rev": "workspace",
+        "step": 3
+    },
+    {
+        "column": "4",
+        "result": "0.6212172730363821",
+        "rev": "workspace",
+        "step": 4
+    }
+]
+    },
+    "title": "reports/metrics_rocauc_lgbm.csv",
+    "width": 300,
+    "height": 300,
+    "layer": [
+        {
+            "encoding": {
+                "x": {
+                    "field": "step",
+                    "type": "quantitative",
+                    "title": "step"
+                },
+                "y": {
+                    "field": "result",
+                    "type": "quantitative",
+                    "title": "result",
+                    "scale": {
+                        "zero": false
+                    }
+                },
+                "color": {
+                    "field": "rev",
+                    "type": "nominal"
+                }
+            },
+            "layer": [
+                {
+                    "mark": "line"
+                },
+                {
+                    "selection": {
+                        "label": {
+                            "type": "single",
+                            "nearest": true,
+                            "on": "mouseover",
+                            "encodings": [
+                                "x"
+                            ],
+                            "empty": "none",
+                            "clear": "mouseout"
+                        }
+                    },
+                    "mark": "point",
+                    "encoding": {
+                        "opacity": {
+                            "condition": {
+                                "selection": "label",
+                                "value": 1
+                            },
+                            "value": 0
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "transform": [
+                {
+                    "filter": {
+                        "selection": "label"
+                    }
+                }
+            ],
+            "layer": [
+                {
+                    "mark": {
+                        "type": "rule",
+                        "color": "gray"
+                    },
+                    "encoding": {
+                        "x": {
+                            "field": "step",
+                            "type": "quantitative"
+                        }
+                    }
+                },
+                {
+                    "encoding": {
+                        "text": {
+                            "type": "quantitative",
+                            "field": "result"
+                        },
+                        "x": {
+                            "field": "step",
+                            "type": "quantitative"
+                        },
+                        "y": {
+                            "field": "result",
+                            "type": "quantitative"
+                        }
+                    },
+                    "layer": [
+                        {
+                            "mark": {
+                                "type": "text",
+                                "align": "left",
+                                "dx": 5,
+                                "dy": -5
+                            },
+                            "encoding": {
+                                "color": {
+                                    "type": "nominal",
+                                    "field": "rev"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+;
+            vegaEmbed('#reports_metrics_rocauc_lgbm_csv', spec);
         </script>
     </div>
     

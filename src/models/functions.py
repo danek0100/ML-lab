@@ -2,10 +2,11 @@ import numpy as np
 import pandas as pd
 import json
 import skmultilearn
+import csv
 
 from skmultilearn.model_selection import IterativeStratification
 from sklearn.metrics import precision_score, f1_score, recall_score, roc_auc_score
-from src.config import score_path_catboost, score_path_lightgbm, CATEGORIES_COL_AFTER_PREP, COL, TARGET_COLS
+from src.config import *
 
 
 def metrics_print_for_catboost(y_predict, y_predict_probability, y_true, average):
@@ -19,19 +20,23 @@ def metrics_print_for_catboost(y_predict, y_predict_probability, y_true, average
     print('recall ', metric_result['recall'])
     print('f1 ', metric_result['f1'])
 
-    # if average == 'micro':
-    #     metric_result['ROCAUC'] = roc_auc_score(y_true, y_predict_probability, average=average)
-    #     print('ROCAUC', metric_result['ROCAUC'])
-    # else:
-    #     metric_result['ROCAUC'] = roc_auc_score(y_true, y_predict_probability, average=None)
-    #     print('ROCAUC', metric_result['ROCAUC'])
+    if average == 'micro':
+        y_predict_probability = np.transpose([predict[:, 1] for predict in y_predict_probability])
+        metric_result['ROCAUC'] = roc_auc_score(y_true, y_predict_probability, average=average)
+        print('ROCAUC', metric_result['ROCAUC'])
+    else:
+        y_predict_probability = np.transpose([predict[:, 1] for predict in y_predict_probability])
+        ROCAUC_score = roc_auc_score(y_true, y_predict_probability, average=None)
+        print('ROCAUC', ROCAUC_score)
+        csv_write(score_path_rocauc_samples_catboost, ROCAUC_score, TARGET_COLS)
+
     print('\n')
 
     with open(score_path_catboost, 'w') as f:
         json.dump(metric_result, f)
 
 
-def metrics_print_for_lightgbm(y_predict, y_predict_proba, y_true, average):
+def metrics_print_for_lightgbm(y_predict, y_predict_probability, y_true, average):
     metric_result = {'average': average,
                      'precision': precision_score(y_true, y_predict, average=average),
                      'recall': recall_score(y_true, y_predict, average=average),
@@ -42,14 +47,18 @@ def metrics_print_for_lightgbm(y_predict, y_predict_proba, y_true, average):
     print('recall ', metric_result['recall'])
     print('f1 ', metric_result['f1'])
 
-    # if average == 'micro':
-    #     y_predict_probability = np.transpose([predict[:, 1] for predict in y_predict_proba])
-    #     metric_result['ROCAUC'] = roc_auc_score(y_true, y_predict_probability, average=average)
-    #     print('ROCAUC', metric_result['ROCAUC'])
-    # else:
-    #     y_predict_probability = np.transpose([predict[:, 1] for predict in y_predict_proba])
-    #     metric_result['ROCAUC'] = roc_auc_score(y_true, y_predict_probability, average=None)
-    #     print('ROCAUC', metric_result['ROCAUC'])
+    if average == 'micro':
+        y_predict_probability = np.transpose([predict[:, 1] for predict in y_predict_probability])
+        metric_result['ROCAUC'] = roc_auc_score(y_true, y_predict_probability, average=average)
+        print('ROCAUC', metric_result['ROCAUC'])
+        with open(score_path_rocauc_samples_lgbm, 'w') as f:
+            json.dump(metric_result, f)
+
+    else:
+        y_predict_probability = np.transpose([predict[:, 1] for predict in y_predict_probability])
+        ROCAUC_score = roc_auc_score(y_true, y_predict_probability, average=None)
+        print('ROCAUC', ROCAUC_score)
+        csv_write(score_path_rocauc_samples_lgbm, ROCAUC_score, TARGET_COLS)
     print('\n')
 
     with open(score_path_lightgbm, 'w') as f:
@@ -82,3 +91,15 @@ def split_data(data, target, test_size):
     X_test = turning_types(X_test)
 
     return X_train, Y_train, X_test, Y_test
+
+
+def csv_write(path, data, columns):
+    with open(path, mode='w', encoding='utf-8') as w_file:
+        column_names = ["column", "result"]
+        file_writer = csv.DictWriter(w_file, delimiter=",",
+                                     lineterminator="\r", fieldnames=column_names)
+        file_writer.writeheader()
+        for i in range(len(data)):
+            file_writer.writerow(
+#                {"column": columns[i], "result": str(data[i])})
+                {"column": i, "result": str(data[i])})

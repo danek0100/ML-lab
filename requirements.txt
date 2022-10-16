@@ -6,6 +6,7 @@ catboost
 scikit-learn
 numpy
 pandas
+csv
 # local package
 -e .
 
