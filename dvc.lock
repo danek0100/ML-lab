@@ -3,15 +3,6 @@ stages:
   data_processing:
     cmd: python -m src.data.make_dataset OUTPUT_TARGET_FILEPATH=.
     deps:
-    - path: data/interim/data_for_train.pkl
-      md5: c23161227647f65da1979b74e7c4e0c9
-      size: 52256
-    - path: data/interim/test.pkl
-      md5: 77e53843e5690f8bd7b30b521f8a0574
-      size: 37012
-    - path: data/processed/target_for_data_for_train.pkl
-      md5: bed81f076218178c4408936f2f8fa788
-      size: 21106
     - path: data/raw/test.csv
       md5: a34d239835317e59b1b9f2fec27fa427
       size: 249580
@@ -88,6 +79,16 @@ stages:
           target_data_train_pkl: data/processed/target_for_data_for_train.pkl
           processed_test_pkl: data/processed/test.pkl
           processed_data_for_train_pkl: data/processed/data_for_train.pkl
+    outs:
+    - path: data/interim/data_for_train.pkl
+      md5: c23161227647f65da1979b74e7c4e0c9
+      size: 52256
+    - path: data/interim/test.pkl
+      md5: 77e53843e5690f8bd7b30b521f8a0574
+      size: 37012
+    - path: data/processed/target_for_data_for_train.pkl
+      md5: bed81f076218178c4408936f2f8fa788
+      size: 21106
   feature_generation:
     cmd: python -m src.features.build_features
     deps:
@@ -97,12 +98,6 @@ stages:
     - path: data/interim/test.pkl
       md5: 77e53843e5690f8bd7b30b521f8a0574
       size: 37012
-    - path: data/processed/data_for_train.pkl
-      md5: 93ca7bd4408b0218310485335e50cbae
-      size: 51584
-    - path: data/processed/test.pkl
-      md5: e5c0e58481efe3b0e4cfd9fa5934b074
-      size: 36306
     - path: src/config.py
       md5: 3e4a7be725268dffcddc10290c19e4b1
       size: 2342
@@ -124,27 +119,22 @@ stages:
           target_data_train_pkl: data/processed/target_for_data_for_train.pkl
           processed_test_pkl: data/processed/test.pkl
           processed_data_for_train_pkl: data/processed/data_for_train.pkl
-  train:
-    cmd: python -m src.models.train_model
-    deps:
-    - path: data/processed/X_test_data.pkl
-      md5: ddf54f85d77d7028579f1d894be0fbd3
-      size: 12877
-    - path: data/processed/Y_test_data.pkl
-      md5: e2ab0a773f00e8f17743bcbd99709014
-      size: 1877
+    outs:
     - path: data/processed/data_for_train.pkl
       md5: 93ca7bd4408b0218310485335e50cbae
       size: 51584
     - path: data/processed/test.pkl
       md5: e5c0e58481efe3b0e4cfd9fa5934b074
       size: 36306
-    - path: models/model_catboost.joblib
-      md5: 2cdf4e085da9f9964f5b07a39b66ee24
-      size: 4905042
-    - path: models/model_lgbm.joblib
-      md5: 2e7757e3d16fe2b452d0d49756021f83
-      size: 6102739
+  train:
+    cmd: python -m src.models.train_model
+    deps:
+    - path: data/processed/data_for_train.pkl
+      md5: 93ca7bd4408b0218310485335e50cbae
+      size: 51584
+    - path: data/processed/test.pkl
+      md5: e5c0e58481efe3b0e4cfd9fa5934b074
+      size: 36306
     - path: src/config.py
       md5: 3e4a7be725268dffcddc10290c19e4b1
       size: 2342
@@ -154,90 +144,37 @@ stages:
     - path: src/models/train_model.py
       md5: 14cbed9bad7647f931b51c5554b01cd5
       size: 2186
-    params:
-      params.yaml:
-        processed_paths:
-          target_data_train_pkl: data/processed/target_for_data_for_train.pkl
-          processed_test_pkl: data/processed/test.pkl
-          processed_data_for_train_pkl: data/processed/data_for_train.pkl
-        train:
-          COL:
-          - Пол
-          - Семья
-          - Этнос
-          - Национальность
-          - Религия
-          - Профессия
-          - Вы работаете?
-          - Выход на пенсию
-          - Прекращение работы по болезни
-          - Сахарный диабет
-          - Гепатит
-          - Онкология
-          - Хроническое заболевание легких
-          - Бронжиальная астма
-          - 'Туберкулез легких '
-          - ВИЧ/СПИД
-          - Регулярный прим лекарственных средств
-          - Травмы за год
-          - Переломы
-          - Статус Курения
-          - Пассивное курение
-          - Частота пасс кур
-          - Алкоголь
-          - Сова/Жаворонок/Голубь
-          - Часов сна
-          - Сон после обеда
-          - Спорт, клубы
-          - Религия, клубы
-          - Образование_ord
-          - Возраст курения
-          - Сигарет в день
-          - Возраст алког
-          CATEGORIES_COL_AFTER_PREP:
-          - Пол
-          - Семья
-          - Этнос
-          - Национальность
-          - Религия
-          - Профессия
-          - Статус Курения
-          - Частота пасс кур
-          - Алкоголь
-          - Сова/Жаворонок/Голубь
-          test_size: 0.2
-          iterations: 1000
-          loss_function: MultiLogloss
-          eval_metric: MultiLogloss
-          learning_rate: 0.01
-          bootstrap_type: Bayesian
-          boost_from_average: false
-          ctr_leaf_count_limit: 3
-          leaf_estimation_iterations: 1
-          leaf_estimation_method: Gradient
-          model_catboost_path: models/model_catboost.joblib
-          model_lgbm_path: models/model_lgbm.joblib
-          X_test_path: data/processed/X_test_data.pkl
-          Y_test_path: data/processed/Y_test_data.pkl
     outs:
     - path: catboost_info/learn_error.tsv
-      md5: 38d78b72f1de2f4bbe5dfa1932c514d9
-      size: 16806
+      md5: e6fcaf69d604005feeef05486c3bb088
+      size: 16805
+    - path: data/processed/X_test_data.pkl
+      md5: d601603694ae82ca70329766c541c420
+      size: 13041
+    - path: data/processed/Y_test_data.pkl
+      md5: 2ce503a70801fe52a889ed0ac3ee6289
+      size: 1877
+    - path: models/model_catboost.joblib
+      md5: 501f12a8ae430daeed4a46d38c31d405
+      size: 4923174
+    - path: models/model_lgbm.joblib
+      md5: 9d6d74ec4e9cf3d193f80f24df14539e
+      size: 6112515
   evaluate:
     cmd: python -m src.models.predict_model
     deps:
     - path: data/processed/X_test_data.pkl
-      md5: ddf54f85d77d7028579f1d894be0fbd3
-      size: 12877
+      md5: d601603694ae82ca70329766c541c420
+      size: 13041
     - path: data/processed/Y_test_data.pkl
-      md5: e2ab0a773f00e8f17743bcbd99709014
+      md5: 2ce503a70801fe52a889ed0ac3ee6289
       size: 1877
     - path: models/model_catboost.joblib
-      md5: 2cdf4e085da9f9964f5b07a39b66ee24
-      size: 4905042
+      md5: 501f12a8ae430daeed4a46d38c31d405
+      size: 4923174
     - path: models/model_lgbm.joblib
-      md5: 2e7757e3d16fe2b452d0d49756021f83
-      size: 6102739
+      md5: 9d6d74ec4e9cf3d193f80f24df14539e
+      size: 6112515
     - path: src/config.py
       md5: 3e4a7be725268dffcddc10290c19e4b1
       size: 2342
@@ -250,86 +187,19 @@ stages:
     - path: src/models/train_model.py
       md5: 14cbed9bad7647f931b51c5554b01cd5
       size: 2186
-    params:
-      params.yaml:
-        evaluate:
-          score_metric: f1
-          score_path_catboost: reports/metrics_catboost.json
-          score_path_lightgbm: reports/metrics_lightgbm.json
-          score_path_rocauc_samples_catboost: reports/metrics_rocauc_catboost.csv
-          score_path_rocauc_samples_lgbm: reports/metrics_rocauc_lgbm.csv
-        train:
-          COL:
-          - Пол
-          - Семья
-          - Этнос
-          - Национальность
-          - Религия
-          - Профессия
-          - Вы работаете?
-          - Выход на пенсию
-          - Прекращение работы по болезни
-          - Сахарный диабет
-          - Гепатит
-          - Онкология
-          - Хроническое заболевание легких
-          - Бронжиальная астма
-          - 'Туберкулез легких '
-          - ВИЧ/СПИД
-          - Регулярный прим лекарственных средств
-          - Травмы за год
-          - Переломы
-          - Статус Курения
-          - Пассивное курение
-          - Частота пасс кур
-          - Алкоголь
-          - Сова/Жаворонок/Голубь
-          - Часов сна
-          - Сон после обеда
-          - Спорт, клубы
-          - Религия, клубы
-          - Образование_ord
-          - Возраст курения
-          - Сигарет в день
-          - Возраст алког
-          CATEGORIES_COL_AFTER_PREP:
-          - Пол
-          - Семья
-          - Этнос
-          - Национальность
-          - Религия
-          - Профессия
-          - Статус Курения
-          - Частота пасс кур
-          - Алкоголь
-          - Сова/Жаворонок/Голубь
-          test_size: 0.2
-          iterations: 1000
-          loss_function: MultiLogloss
-          eval_metric: MultiLogloss
-          learning_rate: 0.01
-          bootstrap_type: Bayesian
-          boost_from_average: false
-          ctr_leaf_count_limit: 3
-          leaf_estimation_iterations: 1
-          leaf_estimation_method: Gradient
-          model_catboost_path: models/model_catboost.joblib
-          model_lgbm_path: models/model_lgbm.joblib
-          X_test_path: data/processed/X_test_data.pkl
-          Y_test_path: data/processed/Y_test_data.pkl
     outs:
     - path: reports/metrics_catboost.json
-      md5: 3c908b995839e2b2ce77068a4f04bc10
+      md5: f87778a33e58594df6e92195735310bb
       size: 113
     - path: reports/metrics_lightgbm.json
-      md5: 129c428616bb290c3da93825add8110e
-      size: 97
+      md5: 983418c7c99d29ccb6cb223434c03362
+      size: 113
     - path: reports/metrics_rocauc_catboost.csv
-      md5: 33a8c76cc22592c966126fe798fb58cf
-      size: 119
+      md5: 8a3dce1826647bff52746bfd57f8027b
+      size: 118
     - path: reports/metrics_rocauc_lgbm.csv
-      md5: c07dee1419e89a39544f117929426023
-      size: 119
+      md5: 39094568b0ec602a373161586c51d212
+      size: 118
   inference:
     cmd: python -m src.inference.inference DATA_FILEPATH=data/raw/test.csv
     deps:

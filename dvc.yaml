@@ -8,12 +8,10 @@ stages:
       - src/data/preprocess.py
       - src/config.py
       - src/utils.py
-
-    params:
-      - interim_paths
-      - data_load
-      - preprocess_category
-      - processed_paths
+    outs:
+      - data/processed/target_for_data_for_train.pkl
+      - data/interim/data_for_train.pkl
+      - data/interim/test.pkl
 
   feature_generation:
     cmd: python -m src.features.build_features
@@ -24,11 +22,9 @@ stages:
       - src/features/build_features.py
       - data/interim/data_for_train.pkl
       - data/interim/test.pkl
-
-    params:
-      - interim_paths
-      - processed_paths
-
+    outs:
+      - data/processed/test.pkl
+      - data/processed/data_for_train.pkl
 
   train:
     cmd: python -m src.models.train_model
@@ -38,10 +34,11 @@ stages:
       - src/models/train_model.py
       - data/processed/test.pkl
       - data/processed/data_for_train.pkl
-
-    params:
-      - train
-      - processed_paths
+    outs:
+      - models/model_catboost.joblib
+      - models/model_lgbm.joblib
+      - data/processed/X_test_data.pkl
+      - data/processed/Y_test_data.pkl
     plots:
       - catboost_info/learn_error.tsv
 
@@ -56,9 +53,6 @@ stages:
       - models/model_lgbm.joblib
       - data/processed/X_test_data.pkl
       - data/processed/Y_test_data.pkl
-    params:
-      - train
-      - evaluate
     metrics:
       - reports/metrics_catboost.json
       - reports/metrics_lightgbm.json
@@ -72,5 +66,3 @@ stages:
       - data/raw/test.csv
       - src/config.py
       - src/inference/inference.py
-    params:
-      - train
