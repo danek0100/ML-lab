@@ -1,3 +1,6 @@
+lightgbm
+category_encoders
+scikit-multilearn
 joblib
 catboost
 scikit-learn

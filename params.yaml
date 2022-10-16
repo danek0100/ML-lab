@@ -1,6 +1,3 @@
-base:
-  seed: 77
-
 data_load:
   train_csv: 'data/raw/train.csv'
   test_csv: 'data/raw/test.csv'
@@ -24,21 +21,25 @@ processed_paths:
   processed_data_for_train_pkl: 'data/processed/data_for_train.pkl'
 
 train:
-  CATEGORIES_COL: ['Пол','Семья', 'Этнос', 'Национальность', 'Религия', 'Профессия', 'Статус Курения', 'Частота пасс кур', 'Алкоголь', 'Сова/Жаворонок/Голубь']
-  train_size: 0.8
+  COL: ['Пол', 'Семья', 'Этнос', 'Национальность', 'Религия', 'Профессия', 'Вы работаете?', 'Выход на пенсию', 'Прекращение работы по болезни', 'Сахарный диабет', 'Гепатит', 'Онкология', 'Хроническое заболевание легких', 'Бронжиальная астма', 'Туберкулез легких ', 'ВИЧ/СПИД', 'Регулярный прим лекарственных средств', 'Травмы за год', 'Переломы', 'Статус Курения', 'Пассивное курение', 'Частота пасс кур', 'Алкоголь', 'Сова/Жаворонок/Голубь', 'Часов сна', 'Сон после обеда', 'Спорт, клубы', 'Религия, клубы', 'Образование_ord', 'Возраст курения', 'Сигарет в день', 'Возраст алког']
+  CATEGORIES_COL_AFTER_PREP: ['Пол','Семья', 'Этнос', 'Национальность', 'Религия', 'Профессия', 'Статус Курения', 'Частота пасс кур', 'Алкоголь', 'Сова/Жаворонок/Голубь']
+  test_size: 0.2
   iterations: 10
   loss_function: 'MultiLogloss'
   eval_metric: 'MultiLogloss'
-  learning_rate: 0.2
+  learning_rate: 0.01
   bootstrap_type: 'Bayesian'
   boost_from_average: False
+  ctr_leaf_count_limit: 3
   leaf_estimation_iterations: 1
   leaf_estimation_method: 'Gradient'
 
-  model_path: 'models/model.joblib'
+  model_catboost_path: 'models/model_catboost.joblib'
+  model_lgbm_path: 'models/model_lgbm.joblib'
   X_test_path: 'data/processed/X_test_data.pkl'
   Y_test_path: 'data/processed/Y_test_data.pkl'
 
 evaluate:
   score_metric: 'f1'
-  score_path: 'reports/metrics.json'
+  score_path_catboost: 'reports/metrics_catboost.json'
+  score_path_lightgbm: 'reports/metrics_lightgbm.json'

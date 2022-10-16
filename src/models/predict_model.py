@@ -1,23 +1,26 @@
 import pandas as pd
 import joblib
-from sklearn.metrics import precision_score, f1_score, recall_score
 from src.config import *
-import json
+from src.models.functions import metrics_print_for_catboost, metrics_print_for_lightgbm
 
 X_test = pd.read_pickle(X_test_path)
 Y_test = pd.read_pickle(Y_test_path)
-model = joblib.load(model_path)
 
-y_predict = model.predict(X_test)
 
-metric_result = {}
-if score_metric == 'f1':
-    metric_result['f1'] = f1_score(Y_test, y_predict, average='samples')
-if score_metric == 'precision':
-    metric_result['precision'] = precision_score(Y_test, y_predict, average='samples')
-if score_metric == 'recall':
-    metric_result['recall'] = recall_score(Y_test, y_predict, average='macro')
+# Predict for first model
+model_catboost = joblib.load(model_catboost_path)
 
-with open(score_path, 'w') as f:
-    json.dump(metric_result, f)
+y_predict = model_catboost.predict(X_test)
+y_predict_proba = model_catboost.predict_proba(X_test)
 
+metrics_print_for_catboost(y_predict, y_predict_proba, Y_test, 'micro')
+metrics_print_for_catboost(y_predict, y_predict_proba, Y_test, 'samples')
+
+# Predict for second model
+model_lgbm = joblib.load(model_lgbm_path)
+
+y_predict = model_lgbm.predict(X_test)
+y_predict_proba = model_lgbm.predict_proba(X_test)
+
+metrics_print_for_lightgbm(y_predict, y_predict_proba, Y_test, 'micro')
+metrics_print_for_lightgbm(y_predict, y_predict_proba, Y_test, 'samples')

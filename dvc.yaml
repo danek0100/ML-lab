@@ -38,14 +38,16 @@ stages:
     cmd: python -m src.models.train_model
     deps:
       - src/config.py
+      - src/models/functions.py
+      - src/models/train_model.py
       - data/processed/test.pkl
       - data/processed/data_for_train.pkl
     params:
-      - base
       - train
       - processed_paths
     outs:
-      - models/model.joblib
+      - models/model_catboost.joblib
+      - models/model_lgbm.joblib
       - data/processed/X_test_data.pkl
       - data/processed/Y_test_data.pkl
     plots:
@@ -55,12 +57,16 @@ stages:
     cmd: python -m src.models.predict_model
     deps:
       - src/config.py
+      - src/models/predict_model.py
       - src/models/train_model.py
-      - models/model.joblib
+      - src/models/functions.py
+      - models/model_catboost.joblib
+      - models/model_lgbm.joblib
       - data/processed/X_test_data.pkl
       - data/processed/Y_test_data.pkl
     params:
       - train
       - evaluate
     metrics:
-      - reports/metrics.json
+      - reports/metrics_catboost.json
+      - reports/metrics_lightgbm.json
