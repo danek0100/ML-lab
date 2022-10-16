@@ -9,6 +9,8 @@ import csv
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
 from src.config import model_catboost_path, model_lgbm_path, TARGET_COLS
+from src.data.preprocess import preprocess
+from src.features.build_features import feature_generation
 
 
 def csv_write(path, data):
@@ -31,7 +33,10 @@ def main(data_filepath):
     logger.info('Model inference for ' + data_filepath + '')
 
     data_filepath = data_filepath[14:]
-    test = pd.read_pickle(data_filepath)
+    test = pd.read_csv(data_filepath)
+    test = preprocess(test)
+    test = feature_generation(test)
+
     model_catboost = joblib.load(model_catboost_path)
     model_lgbm = joblib.load(model_lgbm_path)
 
