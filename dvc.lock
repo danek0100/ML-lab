@@ -115,6 +115,52 @@ stages:
         interim_paths:
           data_for_train_pkl: data/interim/data_for_train.pkl
           test_pkl: data/interim/test.pkl
+        preprocess_category:
+          TARGET_COLS:
+          - Артериальная гипертензия
+          - ОНМК
+          - Стенокардия, ИБС, инфаркт миокарда
+          - Сердечная недостаточность
+          - Прочие заболевания сердца
+          ID_COL: ID
+          EDU_COL: Образование
+          SEX_COL: Пол
+          CAT_COLS:
+          - Пол
+          - Семья
+          - Этнос
+          - Национальность
+          - Религия
+          - Образование
+          - Профессия
+          - Статус Курения
+          - Частота пасс кур
+          - Алкоголь
+          - Время засыпания
+          - Время пробуждения
+          OHE_COLS:
+          - Пол
+          - Вы работаете?
+          - Выход на пенсию
+          - Прекращение работы по болезни
+          - Сахарный диабет
+          - Гепатит
+          - Онкология
+          - Хроническое заболевание легких
+          - Бронжиальная астма
+          - 'Туберкулез легких '
+          - ВИЧ/СПИД
+          - Регулярный прим лекарственных средств
+          - Травмы за год
+          - Переломы
+          - Пассивное курение
+          - Сон после обеда
+          - Спорт, клубы
+          - Религия, клубы
+          REAL_COLS:
+          - Возраст курения
+          - Сигарет в день
+          - Возраст алког
         processed_paths:
           target_data_train_pkl: data/processed/target_for_data_for_train.pkl
           processed_test_pkl: data/processed/test.pkl
@@ -144,37 +190,102 @@ stages:
     - path: src/models/train_model.py
       md5: 14cbed9bad7647f931b51c5554b01cd5
       size: 2186
+    params:
+      params.yaml:
+        processed_paths:
+          target_data_train_pkl: data/processed/target_for_data_for_train.pkl
+          processed_test_pkl: data/processed/test.pkl
+          processed_data_for_train_pkl: data/processed/data_for_train.pkl
+        train:
+          COL:
+          - Пол
+          - Семья
+          - Этнос
+          - Национальность
+          - Религия
+          - Профессия
+          - Вы работаете?
+          - Выход на пенсию
+          - Прекращение работы по болезни
+          - Сахарный диабет
+          - Гепатит
+          - Онкология
+          - Хроническое заболевание легких
+          - Бронжиальная астма
+          - 'Туберкулез легких '
+          - ВИЧ/СПИД
+          - Регулярный прим лекарственных средств
+          - Травмы за год
+          - Переломы
+          - Статус Курения
+          - Пассивное курение
+          - Частота пасс кур
+          - Алкоголь
+          - Сова/Жаворонок/Голубь
+          - Часов сна
+          - Сон после обеда
+          - Спорт, клубы
+          - Религия, клубы
+          - Образование_ord
+          - Возраст курения
+          - Сигарет в день
+          - Возраст алког
+          CATEGORIES_COL_AFTER_PREP:
+          - Пол
+          - Семья
+          - Этнос
+          - Национальность
+          - Религия
+          - Профессия
+          - Статус Курения
+          - Частота пасс кур
+          - Алкоголь
+          - Сова/Жаворонок/Голубь
+          test_size: 0.2
+          iterations: 1001
+          loss_function: MultiLogloss
+          eval_metric: MultiLogloss
+          learning_rate: 0.01
+          bootstrap_type: Bayesian
+          boost_from_average: false
+          ctr_leaf_count_limit: 3
+          leaf_estimation_iterations: 1
+          leaf_estimation_method: Gradient
+          model_catboost_path: models/model_catboost.joblib
+          model_lgbm_path: models/model_lgbm.joblib
+          X_test_path: data/processed/X_test_data.pkl
+          Y_test_path: data/processed/Y_test_data.pkl
     outs:
     - path: catboost_info/learn_error.tsv
-      md5: e6fcaf69d604005feeef05486c3bb088
-      size: 16805
+      md5: 1ed4c90a07f615c5390c1a75dd1820ca
+      size: 16837
     - path: data/processed/X_test_data.pkl
-      md5: d601603694ae82ca70329766c541c420
-      size: 13041
+      md5: 3528edefafdf24d3efa37e8fd3fe7135
+      size: 12896
     - path: data/processed/Y_test_data.pkl
-      md5: 2ce503a70801fe52a889ed0ac3ee6289
+      md5: cd376d03c6db341c919fbf65a645059b
       size: 1877
     - path: models/model_catboost.joblib
-      md5: 501f12a8ae430daeed4a46d38c31d405
-      size: 4923174
+      md5: eee5928bd557e2cc32969219f433f2ed
+      size: 4933918
     - path: models/model_lgbm.joblib
-      md5: 9d6d74ec4e9cf3d193f80f24df14539e
-      size: 6112515
+      md5: 1b074bac4bb1bba03711fb8fe721e035
+      size: 6108607
   evaluate:
     cmd: python -m src.models.predict_model
     deps:
     - path: data/processed/X_test_data.pkl
-      md5: d601603694ae82ca70329766c541c420
-      size: 13041
+      md5: 3528edefafdf24d3efa37e8fd3fe7135
+      size: 12896
     - path: data/processed/Y_test_data.pkl
-      md5: 2ce503a70801fe52a889ed0ac3ee6289
+      md5: cd376d03c6db341c919fbf65a645059b
       size: 1877
     - path: models/model_catboost.joblib
-      md5: 501f12a8ae430daeed4a46d38c31d405
-      size: 4923174
+      md5: eee5928bd557e2cc32969219f433f2ed
+      size: 4933918
     - path: models/model_lgbm.joblib
-      md5: 9d6d74ec4e9cf3d193f80f24df14539e
-      size: 6112515
+      md5: 1b074bac4bb1bba03711fb8fe721e035
+      size: 6108607
     - path: src/config.py
       md5: 3e4a7be725268dffcddc10290c19e4b1
       size: 2342
@@ -187,25 +298,98 @@ stages:
     - path: src/models/train_model.py
       md5: 14cbed9bad7647f931b51c5554b01cd5
       size: 2186
+    params:
+      params.yaml:
+        evaluate:
+          score_metric: f1
+          score_path_catboost: reports/metrics_catboost.json
+          score_path_lightgbm: reports/metrics_lightgbm.json
+          score_path_rocauc_samples_catboost: reports/metrics_rocauc_catboost.csv
+          score_path_rocauc_samples_lgbm: reports/metrics_rocauc_lgbm.csv
+        train:
+          COL:
+          - Пол
+          - Семья
+          - Этнос
+          - Национальность
+          - Религия
+          - Профессия
+          - Вы работаете?
+          - Выход на пенсию
+          - Прекращение работы по болезни
+          - Сахарный диабет
+          - Гепатит
+          - Онкология
+          - Хроническое заболевание легких
+          - Бронжиальная астма
+          - 'Туберкулез легких '
+          - ВИЧ/СПИД
+          - Регулярный прим лекарственных средств
+          - Травмы за год
+          - Переломы
+          - Статус Курения
+          - Пассивное курение
+          - Частота пасс кур
+          - Алкоголь
+          - Сова/Жаворонок/Голубь
+          - Часов сна
+          - Сон после обеда
+          - Спорт, клубы
+          - Религия, клубы
+          - Образование_ord
+          - Возраст курения
+          - Сигарет в день
+          - Возраст алког
+          CATEGORIES_COL_AFTER_PREP:
+          - Пол
+          - Семья
+          - Этнос
+          - Национальность
+          - Религия
+          - Профессия
+          - Статус Курения
+          - Частота пасс кур
+          - Алкоголь
+          - Сова/Жаворонок/Голубь
+          test_size: 0.2
+          iterations: 1001
+          loss_function: MultiLogloss
+          eval_metric: MultiLogloss
+          learning_rate: 0.01
+          bootstrap_type: Bayesian
+          boost_from_average: false
+          ctr_leaf_count_limit: 3
+          leaf_estimation_iterations: 1
+          leaf_estimation_method: Gradient
+          model_catboost_path: models/model_catboost.joblib
+          model_lgbm_path: models/model_lgbm.joblib
+          X_test_path: data/processed/X_test_data.pkl
+          Y_test_path: data/processed/Y_test_data.pkl
     outs:
     - path: reports/metrics_catboost.json
-      md5: f87778a33e58594df6e92195735310bb
-      size: 113
+      md5: c31fcbb9bddc11b42ecfde42b1ded42d
+      size: 114
     - path: reports/metrics_lightgbm.json
-      md5: 983418c7c99d29ccb6cb223434c03362
+      md5: 64d3a72fc493b3d1743de19a82a0ed90
       size: 113
     - path: reports/metrics_rocauc_catboost.csv
-      md5: 8a3dce1826647bff52746bfd57f8027b
-      size: 118
+      md5: b4b633dca7b1cc840ccef5ce9b4617c9
+      size: 119
     - path: reports/metrics_rocauc_lgbm.csv
-      md5: 39094568b0ec602a373161586c51d212
-      size: 118
+      md5: 0fc30c992243a47856f38babdf00edae
+      size: 120
   inference:
     cmd: python -m src.inference.inference DATA_FILEPATH=data/raw/test.csv
     deps:
     - path: data/raw/test.csv
       md5: a34d239835317e59b1b9f2fec27fa427
       size: 249580
+    - path: models/model_catboost.joblib
+      md5: eee5928bd557e2cc32969219f433f2ed
+      size: 4933918
+    - path: models/model_lgbm.joblib
+      md5: 1b074bac4bb1bba03711fb8fe721e035
+      size: 6108607
     - path: src/config.py
       md5: 3e4a7be725268dffcddc10290c19e4b1
       size: 2342
@@ -260,7 +444,7 @@ stages:
           - Алкоголь
           - Сова/Жаворонок/Голубь
           test_size: 0.2
-          iterations: 1000
+          iterations: 1001
           loss_function: MultiLogloss
           eval_metric: MultiLogloss
           learning_rate: 0.01
